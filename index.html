@@ -94,6 +94,7 @@
                 "editors/intellij.png",
                 "editors/vs.jpeg",
                 "editors/fleed.png",
+                "editors/zed.png",
                 "editors/frontpage.png",
                 "editors/kakoune.png",
                 "editors/eclipse.png",
@@ -187,6 +188,7 @@
 
                 if (keyName === " ") {
                     next();
+                    return;
                 }
 
                 const keyNumber = parseInt(keyName);
