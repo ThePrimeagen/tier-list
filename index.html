@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Helix Deez Nuts</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="css/style.css" rel="stylesheet">
+    </head>
+    <body>
+
+        <div class="content">
+        </div>
+
+        <script>
+            function createImg(url) {
+                var img = document.createElement('img');
+                img.src = url;
+                img.className = "text-editor";
+
+                return img;
+            }
+
+            const content = document.querySelector('.content');
+            const rowLookup = new Map();
+
+            function createRowTitle(tierName, color) {
+                const tier = document.createElement('div');
+
+                tier.className = "row-title";
+                tier.style.backgroundColor = "#" + color;
+                tier.innerHTML = tierName;
+
+                return tier;
+            }
+
+            function createRow() {
+                const row = document.createElement('div');
+
+                row.className = "row";
+
+                return row;
+            }
+
+            const tierNames = [
+                "Tier 1",
+                "Tier 2",
+                "Tier 3",
+                "Tier 4",
+                "Tier 5",
+                "Tier 6",
+                "Tier 7",
+                "Tier 8",
+            ];
+            const tierColors = [
+                "ff7f7f",
+                "ffbf7f",
+                "ffdf7f",
+                "ffff7f",
+                "bfff7f",
+                "7fff7f",
+                "7fffbf",
+                "7fffff",
+            ];
+
+            for (let i = 0; i < tierNames.length; ++i) {
+                const color = tierColors[i];
+                const name = tierNames[i];
+
+                const title = createRowTitle(name, color);
+                const row = createRow(name);
+
+                content.appendChild(title);
+                content.appendChild(row);
+
+                rowLookup.set(name, row);
+            }
+
+            rowLookup.get("Tier 1").append(createImg("editors/dreamweaver.png"));
+            const toDetermine = [
+                "editors/dreamweaver.png",
+                "editors/notepad.jpeg",
+                "editors/atom.jpeg",
+                "editors/lapce.png",
+                "editors/vs.jpeg",
+                "editors/emacs.png",
+                "editors/neovim.jpeg",
+                "editors/fleed.png",
+                "editors/intellij.png",
+                "editors/vscode.webp",
+                "editors/eclipse.png",
+                "editors/vim.png",
+                "editors/pycharm.png",
+                "editors/tierlist.webp",
+                "editors/notepad++.png",
+                "editors/vs-express.jpeg",
+                "editors/netbeans.webp",
+                "editors/sublime.png",
+                "editors/xcode.png",
+                "editors/helix.png",
+                "editors/frontpage.png",
+            ];
+
+        </script>
+    </body>
+</html>
+
