@@ -8,14 +8,20 @@
     </head>
     <body>
 
-        <div class="content">
+        <div class="center-content">
+            <div class="content">
+            </div>
         </div>
 
         <script>
-            function createImg(url) {
+            function createImg(url, makeBig = false) {
                 var img = document.createElement('img');
                 img.src = url;
-                img.className = "text-editor";
+                if (makeBig) {
+                    img.className = "center";
+                } else {
+                    img.className = "";
+                }
 
                 return img;
             }
@@ -41,15 +47,19 @@
                 return row;
             }
 
+            const t1 = "Akshually Useful";
+            const t2 = "DTC";
+            const t3 = "If I Have To";
+            const t4 = "Painful";
+            const t5 = "Dog Water";
+            const t6 = "Who?";
             const tierNames = [
-                "Tier 1",
-                "Tier 2",
-                "Tier 3",
-                "Tier 4",
-                "Tier 5",
-                "Tier 6",
-                "Tier 7",
-                "Tier 8",
+                t1,
+                t2,
+                t3,
+                t4,
+                t5,
+                t6,
             ];
             const tierColors = [
                 "ff7f7f",
@@ -75,31 +85,115 @@
                 rowLookup.set(name, row);
             }
 
-            rowLookup.get("Tier 1").append(createImg("editors/dreamweaver.png"));
+            //rowLookup.get(t1).appendChild(createImg("editors/dreamweaver.png"));
             const toDetermine = [
+                "editors/nano.png",
                 "editors/dreamweaver.png",
                 "editors/notepad.jpeg",
-                "editors/atom.jpeg",
                 "editors/lapce.png",
-                "editors/vs.jpeg",
-                "editors/emacs.png",
-                "editors/neovim.jpeg",
-                "editors/fleed.png",
                 "editors/intellij.png",
-                "editors/vscode.webp",
+                "editors/vs.jpeg",
+                "editors/fleed.png",
+                "editors/frontpage.png",
+                "editors/kakoune.png",
                 "editors/eclipse.png",
                 "editors/vim.png",
                 "editors/pycharm.png",
-                "editors/tierlist.webp",
                 "editors/notepad++.png",
                 "editors/vs-express.jpeg",
                 "editors/netbeans.webp",
                 "editors/sublime.png",
                 "editors/xcode.png",
+                "editors/emacs.png",
                 "editors/helix.png",
-                "editors/frontpage.png",
-                "editors/kakoune.png",
+                "editors/atom.jpeg",
+                "editors/vscode.webp",
+                "editors/neovim.jpeg",
             ];
+
+            let currentEditor = -1;
+            let primaryImage = null;
+            let primaryText = null;
+            let placedEditor = null;
+            let placedRow = null;
+
+            function removePrimaries() {
+                if (primaryImage) {
+                    content.removeChild(primaryImage);
+                    primaryImage = null;
+                }
+                if (primaryText) {
+                    content.removeChild(primaryText);
+                    primaryText = null;
+                }
+            }
+
+            function defaults() {
+                placedEditor = null;
+                placedRow = null;
+            }
+
+            function displayEditor() {
+                const editor = toDetermine[currentEditor];
+                const img = createImg(editor, true);
+                const text = document.createElement('div');
+
+                text.className = "text-editor";
+                text.innerHTML = editor;
+
+                content.appendChild(img);
+                content.appendChild(text);
+                primaryImage = img;
+                primaryText = text;
+            }
+
+            function next() {
+                defaults();
+
+                currentEditor += 1;
+
+                if (currentEditor >= toDetermine.length) {
+                    return;
+                }
+
+                displayEditor();
+            }
+
+            function placeEditor(position) {
+                removePrimaries();
+                const name = tierNames[position];
+                if (!name) {
+                    return;
+                }
+
+                const row = rowLookup.get(name);
+                const editor = toDetermine[currentEditor];
+
+                if (placedEditor) {
+                    const row = rowLookup.get(placedRow);
+                    row.removeChild(placedEditor);
+                } else {
+                    const img = createImg(editor);
+                    placedEditor = img;
+                }
+
+                row.appendChild(placedEditor);
+                placedRow = name;
+            }
+
+            // listen to keyboard pressses
+            document.addEventListener('keydown', (event) => {
+                const keyName = event.key;
+
+                if (keyName === " ") {
+                    next();
+                }
+
+                const keyNumber = parseInt(keyName);
+                if (typeof keyNumber === "number" && keyNumber >= 1 && keyNumber <= 6) {
+                    placeEditor(keyNumber - 1);
+                }
+            });
 
         </script>
     </body>

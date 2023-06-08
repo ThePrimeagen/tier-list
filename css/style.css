@@ -3,12 +3,14 @@ body {
     all: unset;
 }
 
-/* content should take up 100% of the screen */
-/* grid layout with 8 rows */
-/* there should be 2 columns */
-/* first column should be square */
-/* the second column should take the rest of the space */
-/* small gap between rows and columns */
+.center-content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    overflow: hidden;
+}
 
 .content {
     display: grid;
@@ -16,12 +18,12 @@ body {
     grid-template-columns: 1fr 7fr;
     grid-gap: 1vmin;
     background-color: #0c0c0c;
-    color: #fff;
+    color: #0c0c0c;
     font-family: monospace;
     font-size: 1.5vmin;
     line-height: 1.5vmin;
     overflow: hidden;
-    height: 100vmin;
+    height: 180vmin;
 }
 
 .row-title {
@@ -43,4 +45,21 @@ body {
 
 img {
   max-height: 100%;
+}
+
+.text-editor {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #fff;
+    font-family: monospace;
+    font-size: 4.5vmin;
+}
+
+img.center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
