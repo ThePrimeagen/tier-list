@@ -46,6 +46,8 @@
 
                 return row;
             }
+            
+            const storageName = 'list-status'
 
             const t1 = "Akshually Useful";
             const t2 = "DTC";
@@ -71,6 +73,22 @@
                 "7fffbf",
                 "7fffff",
             ];
+
+            function createStorageStructure() {
+                let jsonData = {}
+                jsonData.currentEditor = -1
+                jsonData.editors = {}
+                toDetermine.forEach((item, idx) => {
+                    jsonData.editors[item] = ''
+                })
+
+                return jsonData
+            }
+
+            function getStorageValues() {
+                const val = JSON.parse(localStorage.getItem(storageName))
+                return val
+            }
 
             for (let i = 0; i < tierNames.length; ++i) {
                 const color = tierColors[i];
@@ -118,6 +136,18 @@
             let placedEditor = null;
             let placedRow = null;
 
+            function initValues() {
+                let storageValues = getStorageValues()
+                if (storageValues === null) {
+                    const intialStorageData = createStorageStructure()
+                    localStorage.setItem(storageName, JSON.stringify(intialStorageData))
+                    storageValues = getStorageValues()
+                }
+                currentEditor = storageValues.currentEditor
+            }
+
+            initValues()
+
             function removePrimaries() {
                 if (primaryImage) {
                     content.removeChild(primaryImage);
@@ -160,8 +190,11 @@
                 displayEditor();
             }
 
-            function placeEditor(position) {
+            function placeEditor(position, storageWritable=true) {
                 removePrimaries();
+                if (currentEditor >= toDetermine.length) {
+                    return
+                }
                 const name = tierNames[position];
                 if (!name) {
                     return;
@@ -180,6 +213,26 @@
 
                 row.appendChild(placedEditor);
                 placedRow = name;
+                
+                if (storageWritable) {
+                    const currentStorage = getStorageValues()
+                    currentStorage.currentEditor = currentEditor
+                    currentStorage.editors[editor] = name
+                    localStorage.setItem(storageName, JSON.stringify(currentStorage))
+                }
+            }
+
+            const storageValues = getStorageValues()
+            if (storageValues.currentEditor != -1) {
+                const currentStorage = getStorageValues()
+                for (let i = 0; i <= currentStorage.currentEditor; i++) {
+                    currentEditor = i
+                    const currentEditorName = toDetermine[i]
+                    const currentPosition = currentStorage.editors[currentEditorName]
+                    const currentPositionIdx = tierNames.indexOf(currentPosition)
+                    placeEditor(currentPositionIdx, false)
+                    defaults()
+                }
             }
 
             // listen to keyboard pressses
